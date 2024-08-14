@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>top level</title>
+    <meta charset="utf-8">
+    <style>
+        body { background-color: blue; }
+        #frame { margin: 100px; }
+    </style>
+</head>
+<body>
+    <h1>top level page</h1>
+    <iframe id="frame" name="myframe" src="frame.html"></iframe>
+
+    <script type="text/javascript">
+        document.querySelector('body').addEventListener('click', ev => console.log('toplevel body clicked @', ev.x, ev.y));
+    </script>
+</body>
+</html>
