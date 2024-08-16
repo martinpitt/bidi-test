@@ -14,9 +14,15 @@ First, start a local web server to serve the HTML pages:
 python3 -m http.server &
 ```
 
-Then run the reproducer. You can choose between Chromium (default) or Firefox
-(`-f`), show the browser with `-s` (default is headless), and enable verbose
-logging with `-d`. See `./bidimouse.py --help` for an overview of the options.
+Then run the reproducer:
+
+```sh
+./bidimouse.py
+```
+
+You can choose between Chromium (default) or Firefox (`-f`), show the browser
+with `-s` (default is headless), and enable verbose logging with `-d`. See
+`./bidimouse.py --help` for an overview of the options.
 
 ## Demo structure
 
