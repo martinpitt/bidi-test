@@ -55,3 +55,15 @@ INFO:root:LogMessage: console info toplevel body clicked @ 105 89
 
 It works correctly with Firefox (same message as above with directly loading
 `frame.html`)
+
+# Check this with CDP
+
+The `cdp.sh` script checks this with the [Input.dispatchMouseEvent() CDP function](https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchMouseEvent). Note that this script launches the Python http server on its own.
+
+This works correctly: Even in the "click button in frame" case, both the button
+and the frame receive the event:
+
+```
+CONSOLE: log ["btn clicked @",110,88]
+CONSOLE: log ["frame body clicked @",110,88]
+```
