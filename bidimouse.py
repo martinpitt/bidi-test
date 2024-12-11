@@ -201,7 +201,7 @@ class ChromiumBidi(WebdriverBidi):
             }
         }}
 
-        driver = await asyncio.create_subprocess_exec("chromedriver")
+        driver = await asyncio.create_subprocess_exec("chromedriver", "--port=9515")
         wd_url = "http://localhost:9515"
 
         # webdriver needs some time to launch
