@@ -240,8 +240,11 @@ class FirefoxBidi(WebdriverBidi):
         self.profiledir = Path(self.homedir.name) / "profile"
         self.profiledir.mkdir()
         (self.profiledir / "user.js").write_text(f"""
-            user_pref("remote.enabled", true);
-            user_pref("remote.frames.enabled", true);
+            // set this to "Trace" for debugging BiDi interactions
+            user_pref('remote.log.level', 'Warn')
+            user_pref('remote.log.truncate', false);
+            // enable remote logs on stdout
+            user_pref('browser.dom.window.dump.enabled', true);
             user_pref("app.update.auto", false);
             user_pref("datareporting.policy.dataSubmissionEnabled", false);
             user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);
@@ -250,9 +253,6 @@ class FirefoxBidi(WebdriverBidi):
             user_pref("browser.download.folderList", 2);
             user_pref("signon.rememberSignons", false);
             user_pref("dom.navigation.locationChangeRateLimit.count", 9999);
-            // HACK: https://bugzilla.mozilla.org/show_bug.cgi?id=1746154
-            user_pref("fission.webContentIsolationStrategy", 0);
-            user_pref("fission.bfcacheInParent", false);
             user_pref('marionette.port', {marionette_port});
             """)
 
