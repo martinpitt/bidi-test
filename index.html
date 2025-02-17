@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>top level</title>
+    <title>top level application</title>
     <meta charset="utf-8">
     <style>
         body { background-color: blue; }
@@ -10,10 +10,28 @@
 </head>
 <body>
     <h1>top level page</h1>
-    <iframe id="frame" name="myframe" src="frame.html"></iframe>
+    <div id="content">
+        <iframe id="page-first" name="first" src="first.html"></iframe>
+    </div>
 
     <script type="text/javascript">
-        document.querySelector('body').addEventListener('click', ev => console.log('toplevel body clicked @', ev.x, ev.y));
+        window.addEventListener("message", ev => {
+            const target = ev.data;
+            console.log("toplevel: switching to iframe", target);
+
+            // hide first iframe
+            document.getElementById("page-first").style.display = "none";
+
+            // create new iframe and show it
+            const new_frame = document.createElement("iframe");
+            new_frame.setAttribute("title", "new frame");
+            new_frame.setAttribute("name", "second");
+            new_frame.setAttribute("src", target);
+            new_frame.style.display = "block";
+
+            const content = document.getElementById("content");
+            content.appendChild(new_frame);
+        }, false);
     </script>
 </body>
 </html>

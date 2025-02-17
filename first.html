@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>first page</title>
+    <meta charset="utf-8">
+    <style>
+        body { background-color: lightgray; }
+    </style>
+</head>
+<body>
+    <h1>first page</h1>
+    <p><button id="btn">go to second page</button></p>
+
+    <script type="text/javascript">
+        const btn = document.getElementById('btn');
+        btn.addEventListener('click', ev => {
+            console.log('first: button clicked');
+            window.parent.postMessage("/second.html?#hello");
+        });
+    </script>
+</body>
+</html>

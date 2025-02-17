@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# First, run "python3 -m http.server" in the directory that has index.html and frame.html
+# First, run "python3 -m http.server" in the directory that has index.html
 
 import argparse
 import asyncio
@@ -95,7 +95,8 @@ class WebdriverBidi:
                     if data["type"] == "success":
                         result = data["result"]
                         if result.get("type") == "exception":
-                            self.pending_commands[data["id"]].set_exception(RuntimeError(result["exceptionDetails"]["text"]))
+                            self.pending_commands[data["id"]].set_exception(
+                                    RuntimeError(result["exceptionDetails"]["text"]))
                         else:
                             self.pending_commands[data["id"]].set_result(result)
                     else:
@@ -133,7 +134,7 @@ class WebdriverBidi:
         self.last_id += 1
         # some calls can take very long (wait for condition);
         # safe-guard timeout for avoiding eternally hanging tests
-        return await asyncio.wait_for(future, timeout=60)
+        return await asyncio.wait_for(future, timeout=10)
 
     #
     # BiDi state tracking
@@ -240,11 +241,14 @@ class FirefoxBidi(WebdriverBidi):
         self.profiledir = Path(self.homedir.name) / "profile"
         self.profiledir.mkdir()
         (self.profiledir / "user.js").write_text(f"""
-            // set this to "Trace" for debugging BiDi interactions
-            user_pref('remote.log.level', 'Warn')
+            // enable this to work around https://bugzilla.mozilla.org/show_bug.cgi?id=1947402
+            // user_pref('remote.events.async.enabled', false);
+
+            user_pref('remote.log.level', 'Trace');
             user_pref('remote.log.truncate', false);
             // enable remote logs on stdout
             user_pref('browser.dom.window.dump.enabled', true);
+
             user_pref("app.update.auto", false);
             user_pref("datareporting.policy.dataSubmissionEnabled", false);
             user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);
@@ -306,26 +310,14 @@ async def main():
     cls = FirefoxBidi if args.firefox else ChromiumBidi
 
     async with cls(headless=not args.show_browser) as d:
-        print("\n\n\n####################\nDirectly loading frame\n####################")
-        await d.bidi("browsingContext.navigate", context=d.context, url="http://localhost:8000/frame.html", wait="complete")
-        print("\n#### Clicking heading")
-        await d.mouse("h1")
-        await asyncio.sleep(0.5)
+        await d.bidi("browsingContext.navigate", context=d.context, url="http://localhost:8000/index.html",
+                     wait="complete")
+        await d.switch_to_frame("first")
         print("\n#### Clicking button")
         await d.mouse("#btn")
         await asyncio.sleep(0.5)
-
-        print("\n\n\n####################\nLoading toplevel with embedded iframe\n####################")
-        await d.bidi("browsingContext.navigate", context=d.context, url="http://localhost:8000/index.html", wait="complete")
-        print("\n#### Clicking toplevel heading")
-        await d.mouse("h1")
-        await d.switch_to_frame("myframe")
-        print("\n#### Clicking frame heading")
-        await d.mouse("h1")
-        await asyncio.sleep(0.5)
-        print("\n#### Clicking button")
-        await d.mouse("#btn")
-        await asyncio.sleep(0.5)
+        d.switch_to_top()
+        await d.switch_to_frame("second")
 
 
 if __name__ == "__main__":
