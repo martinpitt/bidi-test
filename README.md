@@ -4,7 +4,7 @@ This is a proof of concept of talking [BiDi](https://w3c.github.io/webdriver-bid
 
 In particular, this provides a reproducer for emulated mouse events not working
 in Chromium when trying to click on an element in an iframe (it does work in
-the top-level frame).
+the top-level frame). This is tracked in https://issues.chromium.org/issues/359616812
 
 ## Usage
 
