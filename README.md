@@ -21,6 +21,33 @@ python3 -m http.server
 
 Then the web page is served at <http://localhost:8000/>.
 
+You need Firefox and/or Chromium, `chromedriver` (packaged in Fedora, otherwise
+see Links below), `jq` (packaged everywhere), and
+[websocat](https://github.com/vi/websocat) (you need to download the pre-built
+release binary) for the demo.
+
+Start a BiDi session with [firefox.sh](./firefox.sh) or
+[chromium.sh](./chromium.sh) (via `chromedriver`). The script prints the BiDi
+websocket URL, waits for you to press Enter, and then cleans up everything.
+
+## Listening to events
+
+Run `websocat ws://localhost...` (the URL from above) and subscribe to two
+event types:
+
+```
+{"id": 0, "method": "session.subscribe", "params": {"events": ["log.entryAdded", "browsingContext.domContentLoaded"]}}
+```
+
+Then you can run `console.warn()` or open a web page, and see the events.
+
+## Driving index.html
+
+The [bidi-counter.sh](./bidi-counter.sh) script uses `websocat` to send/receive
+the BiDi JSON protocol to/from the browser. It steps through opening a URL
+(http://localhost:8000/), locating and clicking the "Add one" button, and
+querying the counter text. Run it with the BiDi websocket URL as only argument.
+
 ## History
 
 * oldest, since mid-2000: [Selenium test framework](https://www.selenium.dev/), using the "Webdriver" protocol since 2011:
