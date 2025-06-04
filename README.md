@@ -48,6 +48,14 @@ the BiDi JSON protocol to/from the browser. It steps through opening a URL
 (http://localhost:8000/), locating and clicking the "Add one" button, and
 querying the counter text. Run it with the BiDi websocket URL as only argument.
 
+That shell approach is ok for very simple stuff and to learn and understand the
+protocol. For anything more serious you want to use some abstraction library.
+[bidi-counter.py](./bidi-counter.py) is a translation of the above shell script
+to Python that utilizes
+[Cockpit's bidi webdriver Python module](https://github.com/cockpit-project/cockpit/blob/main/test/common/webdriver_bidi.py).
+Run it with `--help` to see how to select Firefox/Chromium, and enable debug
+and/or headless mode.
+
 ## History
 
 * oldest, since mid-2000: [Selenium test framework](https://www.selenium.dev/), using the "Webdriver" protocol since 2011:
