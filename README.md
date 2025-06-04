@@ -82,3 +82,5 @@ querying the counter text. Run it with the BiDi websocket URL as only argument.
  - [Firefox BiDi bugs](https://bugzilla.mozilla.org/buglist.cgi?product=Remote%20Protocol&component=WebDriver%20BiDi&resolution=---),
    the Firefox BiDi devs are also very responsive and helpful, e.g. [#1947402](https://bugzilla.mozilla.org/show_bug.cgi?id=1947402)
  - [Chromium BiDi bugs](https://issues.chromium.org/issues?q=status:open%20componentid:1456998&s=created_time:desc)
+ - [Cockpit's bidi webdriver Python module](https://github.com/cockpit-project/cockpit/blob/main/test/common/webdriver_bidi.py)
+ - [Cockpit's browser test API that uses the above module](https://github.com/cockpit-project/cockpit/blob/main/test/common/testlib.py)
